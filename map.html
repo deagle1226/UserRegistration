@@ -1,0 +1,41 @@
+{% autoescape true %}
+    {% include 'header.html' %}
+    
+    	<header>Reader Map</header>
+            
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <div id="allmapcanvas"></div>
+        
+        <script>
+			var readers = [
+				{% for reader in readers %}
+					{% if reader.loc is not none %}
+						new google.maps.LatLng({{ reader.loc }}),
+					{% endif %}
+				{% endfor %}
+			];
+			  
+			var mapcanvas = document.getElementById('allmapcanvas');
+			mapcanvas.style.height = '75%';
+			mapcanvas.style.width = '100%';
+		  
+			var myOptions = {
+				zoom: 3,
+				center: readers[0],
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(document.getElementById("allmapcanvas"), myOptions);
+		  
+			
+			var markers = [];
+			
+			for (var i = 0; i < readers.length; i++) {
+				markers.push(new google.maps.Marker({
+					position: readers[i],
+					map: map,
+				}));
+			}
+		</script>
+    
+    {% include 'footer.html' %}
+{% endautoescape %}

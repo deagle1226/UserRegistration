@@ -1,0 +1,39 @@
+{% autoescape true %}
+    {% include 'header.html' %}
+		<script>
+			
+			function toggle(source) {
+  				checkboxes = document.getElementsByName('reader');
+  				for(var i=0, n=checkboxes.length;i<n;i++) {
+    				checkboxes[i].checked = source.checked;
+  				}
+			}
+			
+		</script>
+        <header>Readers</header>
+        <form action="/action" method="post" class="wrapper">
+        	<table cellpadding="0" cellspacing="0">
+            	<tr>
+                	<th><input type="checkbox" onClick="toggle(this)"></th>
+                	<th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Date of Birth</th>
+                    <th>Location</th>
+                </tr>
+        		{% for reader in readers|sort(attribute='lname', reverse=False) %}
+                    <tr>
+                    	<td><input type="checkbox" name="reader" value="{{ reader.key.urlsafe() }}"></td>
+                        <td>{{ reader.fname }} {{ reader.lname }}</td>
+                        <td><a href="mailto:{{ reader.email }}">{{ reader.email }}</a></td>
+                        <td>{{ reader.phone }}</td>
+                        <td>{{ reader.dob }}</td>
+                        <td>{{ reader.loc }}</td>
+                    </tr>
+    			{% endfor %}
+        	</table>
+            <input type="submit" value="Select" class="button" id="submit">
+      	</form>
+    
+    {% include 'footer.html' %}
+{% endautoescape %}

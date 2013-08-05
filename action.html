@@ -1,0 +1,40 @@
+{% autoescape true %}
+    {% include 'header.html' %} 
+        <header>Selected Readers</header>
+        <div class="wrapper">
+        	<div class="buttons">
+        		<a href="mailto:{{ emails }}" class="button buttonSmall">Email All</a>
+                <form action="/map" method="post">
+                	{% for reader in readers %}
+                		<input type="hidden" name="reader" value="{{ reader.key.urlsafe() }}">
+                    {% endfor %}
+                	<input type="submit" class="button buttonSmall" value="See on Map">
+                </form>
+            </div>
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Date of Birth</th>
+                    <th>Location</th>
+                </tr>
+                {% for reader in readers %}
+                    <tr>
+                        <td>{{ reader.fname }} {{ reader.lname }}</td>
+                        <td><a href="mailto:{{ reader.email }}">{{ reader.email }}</a></td>
+                        <td>{{ reader.phone }}</td>
+                        <td>{{ reader.dob }}</td>
+                        <td>{{ reader.loc }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+                    
+            <details>
+                <summary>Email Addresses as text</summary>
+                {{ emails }}
+            </details>
+        </div>
+    
+    {% include 'footer.html' %}
+{% endautoescape %}
